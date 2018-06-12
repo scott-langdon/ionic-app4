@@ -1,0 +1,8 @@
+{
+  "name": "quotes-app",
+  "app_id": "46c24591",
+  "type": "ionic-angular",
+  "integrations": {
+    "cordova": {}
+  }
+}
