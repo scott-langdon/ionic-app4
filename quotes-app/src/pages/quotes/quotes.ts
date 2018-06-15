@@ -1,25 +1,51 @@
-import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
-
-/**
- * Generated class for the QuotesPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+import { Component, OnInit } from '@angular/core';
+import { IonicPage, NavParams, AlertController } from 'ionic-angular';
+import { Quote } from "../../data/quote.interface"; 
+import { QuotesService } from '../../services/quotes';
 
 @IonicPage()
 @Component({
   selector: 'page-quotes',
   templateUrl: 'quotes.html',
 })
-export class QuotesPage {
+export class QuotesPage implements OnInit {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
-  }
+	quoteGroup: {category: string, quotes: Quote[], icon: string};
+	
+	constructor (
+		private navParams: NavParams, 
+		private alertCtrl: AlertController,
+		private quotesService: QuotesService) {}
+	
+	ngOnInit() {
+		this.quoteGroup = this.navParams.data; 
+	}
+	
+	// ionViewDidLoad() {
+	// 	this.quoteGroup = this.navParams.data;
+	// Add elvis operator (?) in template to use this approach
+	// }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad QuotesPage');
-  }
-
+	onAddToFavorite(selectedQuote: Quote) {
+	    const confirm = this.alertCtrl.create({
+	      title: 'Add Quote',
+	      subTitle: 'Are you sure?',
+	      message: 'Are you sure you want to add the quote?',
+	      buttons: [
+	        {
+	          text: 'Disagree',
+	          handler: () => {
+	            console.log('Disagree clicked');
+	          }
+	        },
+	        {
+	          text: 'Agree',
+	          handler: () => {
+	            this.quotesService.addQuoteToFavorites(selectedQuote);
+	          }
+	        }
+	      ]
+	    });
+	    confirm.present();
+	}
 }
