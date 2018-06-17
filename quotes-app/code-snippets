@@ -1,0 +1,10 @@
+  onViewQuote(quote: Quote) {
+  	const modal = this.modalCtrl.create(QuotePage, quote);
+  	modal.present();
+  	modal.onDidDismiss((remove: boolean) => {
+      if(remove) {
+        this.quotesService.removeQuoteFromFavorites(quote); // remove the quoute
+        this.quotes = this.quotesService.getFavoriteQuotes(); // update the favorite quotes aka refresh
+      }
+  	});
+  }
